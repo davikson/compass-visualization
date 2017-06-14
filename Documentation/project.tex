@@ -24,6 +24,13 @@ Celem projektu jest stworzenie wizualizacji kompasu w 3D oraz wizualizacji danyc
 \section{Założenia projektu}
 Układ pomiarowy zostanie zaprogramowany na płytce rozwojowej STM32F3 Discovery wyposażonej w peryferia wymagane do projektu. Odczyt pomiarów, jak i konfiguracja akcelerometru oraz magnetometru realizowana jest poprzez magistralę $I^2C$. Komunikacja układu z komputerem odbędzie się poprzez kabel USB i protokół RS-232. Dane wysyłane będą bitowo, przeznaczając 4 bajty na każdy pomiar i sumę kontrolną typu float. Ramka z danymi rozpoczęta zostanie przez znak 'X' oraz zakończona sumą kontrolną, będącą sumą  wartości przesyłanych pomiarów.
 \section{Funkcjonalności aplikacji}
+\begin{itemize}
+\item Odczyt informacji z czujników realizowany przez układ z mikroprocesorem:\\układ odbiera odczyty z czujnika LSM303DLHC poprzez magistralę $I^2C$, a następnie odczytana wartość jest skalowana, aby odpowiadała zakresowi pomiaru
+\item Przesył pomiarów z urządzenia do komputera:\\Przesył przy wykorzystaniu protokołu RS-232. Ramka danych składa się ze znaku rozpoczynającego 'X', sześciu danych pomiarowych oraz sumy kontrolnej typu float przesyłanych bitowo. Suma kontrolna jest sumą uzyskanych pomiarów.\\Program komputerowy natomiast po otrzymaniu danych sprawdza poprawność znaku początkowego ramki oraz sumy kontrolnej. Gdy odebrane dane są poprawne, odczyty czujników kopiowane są to pamięci.
+\item Wyświetlanie wartości odbieranych pomiarów w postaci tekstowej:\\odczyty odebrane przez port szeregowy są cyklicznie przekazywane do wątku głównego i wyświetlane w widgecie.
+\item Wyświetlanie wykresu przedstawiającego zmianę azymutu względem czasu:\\wykres jest cyklicznie aktualizowany o wartość obliczoną na podstawie przechowywanych pomiarów.
+\item Trójwymiarowa wizualizacja kompasu przy użyciu biblioteki openGL, w postaci tarczy z podziałką kątową oraz igły magnetycznej o modyfikowanej orientacji w zależności od odczytanych pomiarów:\\obiekt utworzony w formacie .obj zostaje odpowiednio przetworzony i wczytany do prograu, następnie w regularnych odstępach czasu obliczana jest orientacja układu z mikrokontrolerem i zmieniana zostaje orientacja obiektu 3D.
+\end{itemize}
 
 \section{Harmonogram}
 \begin{figure}[H]
@@ -66,3 +73,8 @@ Układ pomiarowy zostanie zaprogramowany na płytce rozwojowej STM32F3 Discovery
   \includegraphics[width=0.75\linewidth]{Diagram2.png}
 \end{figure}
 
+\vfill
+\section{Dokumentacja Doxygen}
+\includepdf[pages=5-]{refman.pdf}
+    
+\end{document}
